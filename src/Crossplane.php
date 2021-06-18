@@ -12,7 +12,7 @@ use Nelexa\NginxParser\Ext\LuaBlockPlugin;
  */
 class Crossplane
 {
-    public const VERSION = '1.0.0';
+    public const VERSION = '1.0.1';
 
     private const DEFAULT_ENABLED_EXTENSION = [LuaBlockPlugin::class];
 
