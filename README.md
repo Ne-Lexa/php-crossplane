@@ -10,7 +10,7 @@
 [![Packagist Version](https://img.shields.io/packagist/v/nelexa/crossplane.svg)](https://packagist.org/packages/nelexa/crossplane)
 ![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/nelexa/crossplane)
 [![Build Status](https://github.com/Ne-Lexa/php-crossplane/workflows/build/badge.svg)](https://github.com/Ne-Lexa/php-crossplane/actions)
-[![License](https://img.shields.io/packagist/l/nelexa/crossplane.svg)](https://github.com/Ne-Lexa/crossplane/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/Ne-Lexa/php-crossplane)](https://github.com/Ne-Lexa/php-crossplane/blob/master/LICENSE)
 
 * [Install](#install)
 * [Use in PHP](#use-in-php)
