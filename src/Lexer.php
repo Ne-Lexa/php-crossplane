@@ -102,7 +102,7 @@ class Lexer
 
             // if starting comment
             if (!$token && $char === '#') {
-                while (!str_ends_with($char, "\n")) {
+                while ($char !== null && !str_ends_with($char, "\n")) {
                     $token .= $char;
                     $it->next();
                     [$char] = $it->current();
