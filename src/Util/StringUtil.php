@@ -8,11 +8,14 @@ class StringUtil
 {
     public static function isSpace(?string $text): bool
     {
+        if ($text === null) {
+            return false;
+        }
         if (\function_exists('ctype_space')) {
             return ctype_space($text);
         }
 
-        return $text !== null && $text !== '' && preg_match('~\S~', $text) === 0;
+        return $text !== '' && preg_match('~\S~', $text) === 0;
     }
 
     public static function enquote(string $arg): string
