@@ -29,7 +29,10 @@ class BuildCommand extends Command
 
     private const EXIT_ERROR_BUILDER_IO = 6;
 
-    protected static $defaultName = 'build';
+    public function __construct()
+    {
+        parent::__construct('build');
+    }
 
     protected function configure(): void
     {

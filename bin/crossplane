@@ -22,9 +22,11 @@ ____ ____ ____ ___  ___  ____ __   ___  __   ____
 TEXT;
 
 $application = new \Nelexa\NginxParser\Console\Application($name, $logo);
-$application->add(new \Nelexa\NginxParser\Console\Command\LexCommand());
-$application->add(new \Nelexa\NginxParser\Console\Command\ParseCommand());
-$application->add(new \Nelexa\NginxParser\Console\Command\BuildCommand());
-$application->add(new \Nelexa\NginxParser\Console\Command\MinifyCommand());
-$application->add(new \Nelexa\NginxParser\Console\Command\FormatCommand());
+$application->addCommands([
+    new \Nelexa\NginxParser\Console\Command\LexCommand(),
+    new \Nelexa\NginxParser\Console\Command\ParseCommand(),
+    new \Nelexa\NginxParser\Console\Command\BuildCommand(),
+    new \Nelexa\NginxParser\Console\Command\MinifyCommand(),
+    new \Nelexa\NginxParser\Console\Command\FormatCommand(),
+]);
 $application->run();

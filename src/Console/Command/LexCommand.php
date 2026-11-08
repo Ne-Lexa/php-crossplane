@@ -15,7 +15,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class LexCommand extends Command
 {
-    protected static $defaultName = 'lex';
+    public function __construct()
+    {
+        parent::__construct('lex');
+    }
 
     protected function configure(): void
     {

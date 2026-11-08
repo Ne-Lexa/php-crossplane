@@ -16,7 +16,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class MinifyCommand extends Command
 {
-    protected static $defaultName = 'minify';
+    public function __construct()
+    {
+        parent::__construct('minify');
+    }
 
     protected function configure(): void
     {

@@ -16,7 +16,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ParseCommand extends Command
 {
-    protected static $defaultName = 'parse';
+    public function __construct()
+    {
+        parent::__construct('parse');
+    }
 
     protected function configure(): void
     {

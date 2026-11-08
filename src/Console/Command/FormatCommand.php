@@ -14,7 +14,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class FormatCommand extends Command
 {
-    protected static $defaultName = 'format';
+    public function __construct()
+    {
+        parent::__construct('format');
+    }
 
     protected function configure(): void
     {
