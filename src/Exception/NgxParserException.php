@@ -12,7 +12,7 @@ class NgxParserException extends \Exception
     /** @var int|null */
     private $lineNo;
 
-    public function __construct($message, string $filename, ?int $lineNo = null, \Throwable $previous = null, int $code = 0)
+    public function __construct($message, string $filename, ?int $lineNo = null, ?\Throwable $previous = null, int $code = 0)
     {
         parent::__construct($message, $code, $previous);
         $this->filename = $filename;

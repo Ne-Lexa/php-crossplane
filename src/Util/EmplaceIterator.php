@@ -23,6 +23,7 @@ class EmplaceIterator implements \Iterator
     /**
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         if (!empty($this->ret)) {
@@ -43,6 +44,7 @@ class EmplaceIterator implements \Iterator
     /**
      * @return bool|float|int|string|null
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return $this->iterator->key();

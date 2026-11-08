@@ -1155,7 +1155,11 @@ class ParserTest extends AbstractTestCase
         $parser = $crossplane->parser();
         $reflClass = new \ReflectionClass($parser);
         $reflMethod = $reflClass->getMethod('combineParsedConfigs');
-        $reflMethod->setAccessible(true);
+        if (\PHP_VERSION_ID < 80100) {
+            // methods are always accessible since PHP 8.1, and calling
+            // setAccessible() is deprecated since PHP 8.5
+            $reflMethod->setAccessible(true);
+        }
         $combinedActual = $reflMethod->invoke($parser, $separate);
 
         $combinedException = [
