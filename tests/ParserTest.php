@@ -1032,6 +1032,88 @@ class ParserTest extends AbstractTestCase
     }
 
     /**
+     * A config with an unterminated block is reported as a failed
+     * parsing instead of being silently accepted.
+     *
+     * @throws NgxParserException
+     */
+    public function testParseUnterminatedBlock(): void
+    {
+        $config = __DIR__ . \DIRECTORY_SEPARATOR . 'configs' . \DIRECTORY_SEPARATOR . 'unterminated-block' . \DIRECTORY_SEPARATOR . 'nginx.conf';
+
+        $crossplane = new Crossplane();
+        $payload = $crossplane->parser()->parse($config);
+
+        static::assertEquals(
+            [
+                'status' => 'failed',
+                'errors' => [
+                    [
+                        'file' => $config,
+                        'error' => sprintf('unexpected end of file, expecting "}" in %s:3', $config),
+                        'line' => 3,
+                    ],
+                ],
+                'config' => [
+                    [
+                        'file' => $config,
+                        'status' => 'failed',
+                        'errors' => [
+                            [
+                                'error' => sprintf('unexpected end of file, expecting "}" in %s:3', $config),
+                                'line' => 3,
+                            ],
+                        ],
+                        'parsed' => [],
+                    ],
+                ],
+            ],
+            $payload
+        );
+    }
+
+    /**
+     * A config that ends in the middle of a directive is reported as
+     * a failed parsing instead of crashing the parser.
+     *
+     * @throws NgxParserException
+     */
+    public function testParseUnterminatedDirective(): void
+    {
+        $config = __DIR__ . \DIRECTORY_SEPARATOR . 'configs' . \DIRECTORY_SEPARATOR . 'unterminated-directive' . \DIRECTORY_SEPARATOR . 'nginx.conf';
+
+        $crossplane = new Crossplane();
+        $payload = $crossplane->parser()->parse($config);
+
+        static::assertEquals(
+            [
+                'status' => 'failed',
+                'errors' => [
+                    [
+                        'file' => $config,
+                        'error' => sprintf('unexpected end of file, expecting ";" or "{" in %s:2', $config),
+                        'line' => 2,
+                    ],
+                ],
+                'config' => [
+                    [
+                        'file' => $config,
+                        'status' => 'failed',
+                        'errors' => [
+                            [
+                                'error' => sprintf('unexpected end of file, expecting ";" or "{" in %s:2', $config),
+                                'line' => 2,
+                            ],
+                        ],
+                        'parsed' => [],
+                    ],
+                ],
+            ],
+            $payload
+        );
+    }
+
+    /**
      * @throws \ReflectionException
      */
     public function testCombineParsedMissingValues(): void

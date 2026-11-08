@@ -6,6 +6,7 @@ namespace Nelexa\NginxParser\Tests;
 
 use Nelexa\NginxParser\Crossplane;
 use Nelexa\NginxParser\Exception\NgxParserException;
+use Nelexa\NginxParser\Exception\NgxParserSyntaxException;
 
 /**
  * @internal
@@ -135,5 +136,26 @@ class LexerTest extends AbstractTestCase
                 ';', '}',
             ],
         ];
+    }
+
+    /**
+     * Raises a syntax error when braces aren't balanced at EOF.
+     *
+     * @throws NgxParserException
+     */
+    public function testLexUnterminatedBlock(): void
+    {
+        $config = __DIR__ . \DIRECTORY_SEPARATOR . 'configs' . \DIRECTORY_SEPARATOR . 'unterminated-block' . \DIRECTORY_SEPARATOR . 'nginx.conf';
+
+        try {
+            $crossplane = new Crossplane();
+            iterator_to_array($crossplane->lexer()->lex($config));
+            static::fail('NgxParserSyntaxException was not thrown');
+        } catch (NgxParserSyntaxException $e) {
+            static::assertSame(
+                sprintf('unexpected end of file, expecting "}" in %s:3', $config),
+                (string) $e
+            );
+        }
     }
 }

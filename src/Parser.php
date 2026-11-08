@@ -7,6 +7,7 @@ namespace Nelexa\NginxParser;
 use Nelexa\NginxParser\Exception\NgxParserDirectiveException;
 use Nelexa\NginxParser\Exception\NgxParserException;
 use Nelexa\NginxParser\Exception\NgxParserIOException;
+use Nelexa\NginxParser\Exception\NgxParserSyntaxException;
 use Nelexa\NginxParser\Util\FileUtil;
 
 class Parser
@@ -233,6 +234,9 @@ class Parser
 
                 // parse arguments by reading tokens
                 $tokens->next();
+                if (!$tokens->valid()) {
+                    throw new NgxParserSyntaxException('unexpected end of file, expecting ";" or "{"', $fname, $lineNo);
+                }
                 [$token, , $quoted] = $tokens->current(); // disregard line numbers of args
                 $chars = ['{', ';', '}'];
                 while (!\in_array($token, $chars, true) || $quoted) {
@@ -243,6 +247,9 @@ class Parser
                     }
 
                     $tokens->next();
+                    if (!$tokens->valid()) {
+                        throw new NgxParserSyntaxException('unexpected end of file, expecting ";" or "{"', $fname, $lineNo);
+                    }
                     [$token, , $quoted] = $tokens->current();
                 }
 

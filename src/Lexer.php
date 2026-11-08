@@ -246,6 +246,7 @@ class Lexer
     private function balanceBraces(iterable $tokens, string $filename): \Generator
     {
         $depth = 0;
+        $line = 0;
 
         foreach ($tokens as [$token, $line, $quoted]) {
             if ($token === '}' && !$quoted) {
@@ -260,6 +261,11 @@ class Lexer
             }
 
             yield [$token, $line, $quoted];
+        }
+
+        // raise error if we have less right braces than left at EOF
+        if ($depth > 0) {
+            throw new NgxParserSyntaxException('unexpected end of file, expecting "}"', $filename, $line);
         }
     }
 
