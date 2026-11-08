@@ -189,13 +189,16 @@ class Lexer
      */
     private function iterateFileContents($fp): ?\Generator
     {
-        while (($str = fread($fp, 1024)) !== false) {
-            yield $str;
+        $contents = stream_get_contents($fp);
 
-            if (feof($fp)) {
-                break;
-            }
+        if ($contents === false) {
+            return;
         }
+
+        // replace ill-formed byte sequences with the Unicode replacement
+        // character, like python crossplane does with errors='replace'
+        // when it opens a file
+        yield StringUtil::scrubUtf8($contents);
     }
 
     private function iterateChars(iterable $it): ?\Generator

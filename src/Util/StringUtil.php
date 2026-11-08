@@ -18,6 +18,43 @@ class StringUtil
         return $text !== '' && preg_match('~\S~', $text) === 0;
     }
 
+    /**
+     * Replaces ill-formed UTF-8 byte sequences with the Unicode
+     * replacement character (U+FFFD).
+     *
+     * @param string $text
+     *
+     * @return string
+     */
+    public static function scrubUtf8(string $text): string
+    {
+        if ($text === '') {
+            return $text;
+        }
+
+        $hasSubstituteCharacter = \function_exists('mb_substitute_character');
+        $substituteCharacter = null;
+        if ($hasSubstituteCharacter) {
+            $current = \mb_substitute_character();
+            if ($current !== false) {
+                $substituteCharacter = $current;
+            }
+            \mb_substitute_character(0xFFFD);
+        }
+
+        try {
+            if (\function_exists('mb_scrub')) {
+                return (string) \mb_scrub($text, 'UTF-8');
+            }
+
+            return (string) \mb_convert_encoding($text, 'UTF-8', 'UTF-8');
+        } finally {
+            if ($substituteCharacter !== null) {
+                \mb_substitute_character($substituteCharacter);
+            }
+        }
+    }
+
     public static function enquote(string $arg): string
     {
         if (!self::needsQuotes($arg)) {

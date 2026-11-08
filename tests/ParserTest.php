@@ -964,6 +964,74 @@ class ParserTest extends AbstractTestCase
     }
 
     /**
+     * Ill-formed byte sequences are replaced with the Unicode
+     * replacement character (U+FFFD) instead of failing or keeping
+     * raw invalid bytes.
+     *
+     * @throws NgxParserException
+     */
+    public function testParseNonUnicode(): void
+    {
+        $dir = __DIR__ . \DIRECTORY_SEPARATOR . 'configs' . \DIRECTORY_SEPARATOR . 'non-unicode';
+        $config = $dir . \DIRECTORY_SEPARATOR . 'nginx.conf';
+
+        $crossplane = new Crossplane();
+        $payload = $crossplane->parser()->parse($config, [Parser::OPTION_COMMENTS => true]);
+
+        static::assertEquals(
+            [
+                'status' => 'ok',
+                'errors' => [],
+                'config' => [
+                    [
+                        'status' => 'ok',
+                        'errors' => [],
+                        'file' => $config,
+                        'parsed' => [
+                            [
+                                'directive' => 'http',
+                                'line' => 1,
+                                'args' => [],
+                                'block' => [
+                                    [
+                                        'directive' => 'server',
+                                        'line' => 2,
+                                        'args' => [],
+                                        'block' => [
+                                            [
+                                                'directive' => 'location',
+                                                'line' => 3,
+                                                'args' => ['/city'],
+                                                'block' => [
+                                                    [
+                                                        'directive' => '#',
+                                                        'line' => 4,
+                                                        'args' => [],
+                                                        'comment' => " M\u{FFFD}lln",
+                                                    ],
+                                                    [
+                                                        'directive' => 'return',
+                                                        'line' => 5,
+                                                        'args' => [
+                                                            '200',
+                                                            "M\u{FFFD}lln\\n",
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            $payload
+        );
+    }
+
+    /**
      * @throws \ReflectionException
      */
     public function testCombineParsedMissingValues(): void
