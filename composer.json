@@ -1,18 +1,19 @@
 {
     "name": "nelexa/crossplane",
     "description": "Reliable and fast NGINX configuration file parser and builder. This is a PHP port of the Nginx Python crossplane package.",
-    "keywords": ["nginx", "creossplane", "parser"],
+    "keywords": ["nginx", "crossplane", "parser"],
     "type": "library",
     "require": {
         "php": ">=7.1.3",
         "ext-json": "*",
         "ext-mbstring": "*",
-        "symfony/console": "*",
+        "symfony/console": "^4.4 || ^5.4 || ^6.4 || ^7.0 || ^8.0",
+        "symfony/polyfill-mbstring": "^1.20",
         "symfony/polyfill-php73": "^1.23",
         "symfony/polyfill-php80": "^1.23"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.5 | ^8.5 | ^9.5"
+        "phpunit/phpunit": "^7.5 || ^8.5 || ^9.6"
     },
     "suggest": {
         "symfony/polyfill-mbstring": "To support UTF-8 if the Mbstring PHP extension is not enabled"
